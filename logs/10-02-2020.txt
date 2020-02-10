@@ -59,3 +59,17 @@
 10/02/2020, 07:48:11  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f0f249e6ac0>: Failed to establish a new connection: [Errno 110] Connection timed out')))[0m
 10/02/2020, 07:48:11  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
 10/02/2020, 07:48:11  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 07:48:26  =>  [INSTAGRAM]	➔  Actualizando Header
+10/02/2020, 07:48:26  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 07:48:26  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 07:48:26  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 07:48:27  =>  [ [34m![39m ]	[34m................Estatus code: 429.................[0m
+10/02/2020, 07:48:28  =>  [INSTAGRAM]	➔  Esperando tiempo de fresqueo, la conexion fue detectada por systemas anti DDOS
+10/02/2020, 07:48:48  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 07:48:48  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 07:48:48  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 07:48:49  =>  [ [34m![39m ]	[34m................Estatus code: 429.................[0m
+10/02/2020, 07:48:49  =>  [INSTAGRAM]	➔  Esperando tiempo de fresqueo, la conexion fue detectada por systemas anti DDOS
+10/02/2020, 07:49:30  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 07:49:30  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 07:49:30  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
