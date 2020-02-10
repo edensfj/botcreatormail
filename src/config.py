@@ -6,14 +6,14 @@ SOURCES_DIR = "%s/sources/"%(BASE_DIR)
 LOGS_DIR = "%s/logs/"%(BASE_DIR)
 Config = {
     "hushmail":{
-        "loginEmail":"edens0hulk@hushmail.com",
+        "loginEmail":"edens0hulk@hushmail.com", #vencida
         "loginPass":"",
     },
     "mysql":{
-        "host":"localhost",
-        "user":"fifi",
-        "pass":"12345",
-        "db":"botalex",
+        "host":"puntoquimico.com.co",
+        "user":"bot",
+        "pass":"fabcaa97871555b68aa095335975e613",
+        "db":"bot",
     }
 
 }
