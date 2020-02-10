@@ -196,3 +196,9 @@
 10/02/2020, 08:12:24  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
 10/02/2020, 08:12:24  =>  [INSTAGRAM]	➔  Generando FormData
 10/02/2020, 08:12:24  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 08:14:33  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 08:14:33  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /accounts/web_create_ajax/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f59fbe069a0>: Failed to establish a new connection: [Errno 110] Connection timed out')))[0m
+10/02/2020, 08:14:33  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 08:14:33  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 08:14:33  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 08:14:33  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
