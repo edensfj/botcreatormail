@@ -126,7 +126,7 @@ class Instagram:
                 "X-Instagram-AJAX":self.xInstagramAJAX,
                 "X-Requested-With":"XMLHttpRequest",
             })
-            self.cookies.update({
+            self.session.cookies.update({
                 "csrftoken":self.csrftoken,
                 "ig_did":self.deviceId,
             })
@@ -189,7 +189,7 @@ class Instagram:
             "X-Instagram-AJAX":self.xInstagramAJAX,
             "X-Requested-With":"XMLHttpRequest",
         })
-        self.cookies.update({
+        self.session.cookies.update({
             "csrftoken":self.csrftoken,
             "ig_did":self.deviceId,
         })
@@ -276,8 +276,18 @@ class Instagram:
             'first_name': '{}'.format(urllib.parse.quote_plus(self.nombre)),
             'opt_into_one_tap' : 'false'
         }
-        ppjson({
-            "":
+        self.session.headers.update({
+            "Accept-Language":self.AcceptLanguage,
+            "Content-Type":"application/x-www-form-urlencoded",
+            "X-CSRFToken":self.csrftoken,
+            "X-IG-App-ID":"936619743392459",
+            "X-IG-WWW-Claim":"0",
+            "X-Instagram-AJAX":self.xInstagramAJAX,
+            "X-Requested-With":"XMLHttpRequest",
+        })
+        self.session.cookies.update({
+            "csrftoken":self.csrftoken,
+            "ig_did":self.deviceId,
         })
         Error.executing("Accediendo al attempt",self.listerrorExecutinModulo)
         try:
