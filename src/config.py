@@ -3,6 +3,7 @@ import logging,sys
 BASE_DIR = sys.path[0]
 LIBS_DIR = "%s/libs/"%(BASE_DIR)
 SOURCES_DIR = "%s/sources/"%(BASE_DIR)
+SOURCES_DIR = "%s/logs/"%(BASE_DIR)
 Config = {
     "hushmail":{
         "loginEmail":"edens0hulk@hushmail.com",

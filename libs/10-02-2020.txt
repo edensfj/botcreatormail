@@ -604,3 +604,102 @@
 10/02/2020, 01:40:50  =>  [SQL]	➔  Ejecutando Query
 10/02/2020, 01:40:50  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
 10/02/2020, 01:41:01  =>  [ [33m⚠[39m ]	[33m..................EJECUCION DETENIDA POR EL USUSARIO..................[0m
+10/02/2020, 01:55:28  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 01:55:28  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 01:55:29  =>  [SQL]	➔  Buscando un Email valido para instagram.
+10/02/2020, 01:55:29  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:55:29  =>  [ [34m![39m ]	[34mSe encontro Email valido para instagram[0m
+10/02/2020, 01:55:29  =>  [SQL]	➔  SELECT * FROM emails WHERE id = "12" AND hasinstagram = "0"
+10/02/2020, 01:55:29  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:55:29  =>  [ [34m![39m ]	[34mConfigurando Instagram para su uso[0m
+10/02/2020, 01:55:29  =>  [ [34m![39m ]	[34mRestableciendo proxys[0m
+10/02/2020, 01:55:29  =>  [S-RANDPROXY]	➔  Generando lista de proxys desde https://www.sslproxies.org/
+10/02/2020, 01:55:30  =>  [S-RANDPROXY]	➔  Parseando proxys
+10/02/2020, 01:55:30  =>  [S-RANDPROXY]	➔  Proxy [http://114.134.191.194:31867] seleccionado.
+10/02/2020, 01:55:30  =>  [INSTAGRAM]	➔  Configurando proxy
+10/02/2020, 01:55:30  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 01:55:30  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 01:55:30  =>  [ [34m![39m ]	[34mIniciando configuracoin de TempMail[0m
+10/02/2020, 01:55:30  =>  [TEMPMAIL]	➔  Buscando domains validos para tempmail
+10/02/2020, 01:55:32  =>  [SQL]	➔  SELECT id FROM emails WHERE email = "rueda_aureliano.iqw66@bizcomail.com"
+10/02/2020, 01:55:32  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:55:32  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 01:55:44  =>  [INSTAGRAM]	➔  Actualizando Header
+10/02/2020, 01:55:44  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 01:55:45  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 01:55:45  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 01:55:46  =>  [ [32m✔[39m ]	[32m................Estatus code: 200.................[0m
+10/02/2020, 01:55:46  =>  [[31m 𐄂[39m ]	[0mSe encontraron errores al crear la cuenta de instagram, error type: [31msignup_block[0m
+10/02/2020, 01:55:47  =>  [ [33m⚠[39m ]	[33mError en: [ip][0m
+10/02/2020, 01:55:47  =>  [INSTAGRAM]	➔  [ip]: Tu dirección IP se reportó como un proxy abierto. Si crees que se trata de un error, visita http://help.instagram.com/
+10/02/2020, 01:55:48  =>  [INSTAGRAM]	➔  Cambiando proxy para esta Session
+10/02/2020, 01:55:48  =>  [S-RANDPROXY]	➔  Proxy [http://171.6.202.49:8080] seleccionado.
+10/02/2020, 01:55:48  =>  [INSTAGRAM]	➔  Ahora el proxy http://171.6.202.49:8080 esta en uso
+10/02/2020, 01:55:48  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 01:55:48  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 01:55:48  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 01:57:58  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 01:57:58  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /accounts/web_create_ajax/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f506ffc9910>: Failed to establish a new connection: [Errno 110] Connection timed out')))[0m
+10/02/2020, 01:57:58  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 01:57:58  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 01:57:59  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 01:57:59  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 01:58:08  =>  [ [34m![39m ]	[34m................Estatus code: 400.................[0m
+10/02/2020, 01:58:08  =>  [[31m 𐄂[39m ]	[0mFIN DE CONDIGO
+10/02/2020, 01:58:08  =>  [SQL]	➔  Buscando un Email valido para instagram.
+10/02/2020, 01:58:09  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:58:09  =>  [ [34m![39m ]	[34mSe encontro Email valido para instagram[0m
+10/02/2020, 01:58:09  =>  [SQL]	➔  SELECT * FROM emails WHERE id = "12" AND hasinstagram = "0"
+10/02/2020, 01:58:09  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:58:09  =>  [ [34m![39m ]	[34mConfigurando Instagram para su uso[0m
+10/02/2020, 01:58:09  =>  [ [34m![39m ]	[34mRestableciendo proxys[0m
+10/02/2020, 01:58:09  =>  [S-RANDPROXY]	➔  Generando lista de proxys desde https://www.sslproxies.org/
+10/02/2020, 01:58:09  =>  [S-RANDPROXY]	➔  Parseando proxys
+10/02/2020, 01:58:10  =>  [S-RANDPROXY]	➔  Proxy [http://180.179.98.22:3128] seleccionado.
+10/02/2020, 01:58:10  =>  [INSTAGRAM]	➔  Configurando proxy
+10/02/2020, 01:58:10  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 01:58:10  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 01:58:10  =>  [ [34m![39m ]	[34mIniciando configuracoin de TempMail[0m
+10/02/2020, 01:58:10  =>  [TEMPMAIL]	➔  Buscando domains validos para tempmail
+10/02/2020, 01:58:11  =>  [SQL]	➔  SELECT id FROM emails WHERE email = "rueda_aureliano.iqw66@bizcomail.com"
+10/02/2020, 01:58:11  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 01:58:11  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 01:58:16  =>  [ [33m⚠[39m ]	[33m..................EJECUCION DETENIDA POR EL USUSARIO..................[0m
+10/02/2020, 02:09:39  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 02:09:39  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 02:09:39  =>  [SQL]	➔  Buscando un Email valido para instagram.
+10/02/2020, 02:09:39  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 02:09:39  =>  [ [34m![39m ]	[34mSe encontro Email valido para instagram[0m
+10/02/2020, 02:09:40  =>  [SQL]	➔  SELECT * FROM emails WHERE id = "12" AND hasinstagram = "0"
+10/02/2020, 02:09:40  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 02:09:40  =>  [ [34m![39m ]	[34mConfigurando Instagram para su uso[0m
+10/02/2020, 02:09:40  =>  [ [34m![39m ]	[34mRestableciendo proxys[0m
+10/02/2020, 02:09:40  =>  [S-RANDPROXY]	➔  Generando lista de proxys desde https://www.sslproxies.org/
+10/02/2020, 02:09:40  =>  [S-RANDPROXY]	➔  Parseando proxys
+10/02/2020, 02:09:41  =>  [S-RANDPROXY]	➔  Proxy [http://185.220.101.10:3128] seleccionado.
+10/02/2020, 02:09:41  =>  [INSTAGRAM]	➔  Configurando proxy
+10/02/2020, 02:09:41  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 02:09:41  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 02:09:41  =>  [ [34m![39m ]	[34mIniciando configuracoin de TempMail[0m
+10/02/2020, 02:09:41  =>  [TEMPMAIL]	➔  Buscando domains validos para tempmail
+10/02/2020, 02:09:42  =>  [SQL]	➔  SELECT id FROM emails WHERE email = "rueda_aureliano.iqw66@bizcomail.com"
+10/02/2020, 02:09:42  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 02:09:42  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 02:09:42  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 02:09:42  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f53f64720d0>: Failed to establish a new connection: [Errno 111] Connection refused')))[0m
+10/02/2020, 02:09:42  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 02:09:42  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 02:09:43  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 02:09:43  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f53f6472df0>: Failed to establish a new connection: [Errno 111] Connection refused')))[0m
+10/02/2020, 02:09:43  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 02:09:43  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 02:09:43  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 02:09:43  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f53f6472430>: Failed to establish a new connection: [Errno 111] Connection refused')))[0m
+10/02/2020, 02:09:43  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 02:09:44  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 02:09:44  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 02:09:44  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f53f6472ee0>: Failed to establish a new connection: [Errno 111] Connection refused')))[0m
+10/02/2020, 02:09:44  =>  [INSTAGRAM]	➔  Cambiando proxy para esta Session
+10/02/2020, 02:09:44  =>  [S-RANDPROXY]	➔  Proxy [http://177.67.217.30:61416] seleccionado.
+10/02/2020, 02:09:44  =>  [INSTAGRAM]	➔  Ahora el proxy http://177.67.217.30:61416 esta en uso
+10/02/2020, 02:09:44  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial

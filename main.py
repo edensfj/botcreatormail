@@ -28,50 +28,87 @@ passhush  = BotConfig["hushmail"]["loginPass"]
 
 sql = Sql()
 
-while True:
-    try:
-        f = sql.lastEmailAliasAvailable()
-        if f:
-            createdby = f['createdby']
-            usedby = f['usedby']
-            if createdby=='1':
-                a = sql.Select(["alias"]).From('alias').Where([("id",usedby)]).Run()[0]['alias']
-                username = a.split("@")[0]
-                fullname = username.split(".")[0].split("_")
-                if len(fullname)==3:
-                    fullname.pop(1)
-                    fullname =" ".join(fullname)
-                else:
-                    fullname =" ".join(fullname)
-                instagram = Instagram()
-                instagram.createAccount(a, fullname,username,'temp_password', True)
-            else:
-                m = sql.Select(["*"]).From('emails').Where([("id",usedby),("hasinstagram","0")]).Run()[0]
-                u=m['email']
-                username = u.split("@")[0]
-                fullname = username.split(".")[0].split("_")
-                if len(fullname)==3:
-                    fullname.pop(1)
-                    fullname =" ".join(fullname)
-                else:
-                    fullname =" ".join(fullname)
-                instagram = Instagram()
-                instagram.createAccount(u, fullname, username, 'temp_password', True)
+f = sql.lastEmailAliasAvailable()
+if f:
+    createdby = f['createdby']
+    usedby = f['usedby']
+    if createdby=='1':
+        a = sql.Select(["alias"]).From('alias').Where([("id",usedby)]).Run()[0]['alias']
+        username = a.split("@")[0]
+        fullname = username.split(".")[0].split("_")
+        if len(fullname)==3:
+            fullname.pop(1)
+            fullname =" ".join(fullname)
         else:
-            users = RandomUser()
-            for user in users.generate(1):
-                ppjson(user)
-                sys.exit()
-    except KeyboardInterrupt:
-        print()
-        Error.warn("EJECUCION DETENIDA POR EL USUSARIO".center(70,'.'))
+            fullname =" ".join(fullname)
+        instagram = Instagram()
+        instagram.createAccount(a, fullname,username,'temp_password', True)
+    else:
+        m = sql.Select(["*"]).From('emails').Where([("id",usedby),("hasinstagram","0")]).Run()[0]
+        u=m['email']
+        username = u.split("@")[0]
+        fullname = username.split(".")[0].split("_")
+        if len(fullname)==3:
+            fullname.pop(1)
+            fullname =" ".join(fullname)
+        else:
+            fullname =" ".join(fullname)
+        instagram = Instagram()
+        instagram.createAccount(u, fullname, username, 'temp_password', True)
+else:
+    users = RandomUser()
+    for user in users.generate(1):
+        ppjson(user)
         sys.exit()
 
-    """
-        en esta parte se escoje si se crean cuentas de correo o se utilizan
-        de una base de datos
 
-        despues de crear o selecionar la cuenta de correo
-        procedemos a crear la cuentas de instagram
 
-    """
+
+
+# while True:
+#     try:
+#         f = sql.lastEmailAliasAvailable()
+#         if f:
+#             createdby = f['createdby']
+#             usedby = f['usedby']
+#             if createdby=='1':
+#                 a = sql.Select(["alias"]).From('alias').Where([("id",usedby)]).Run()[0]['alias']
+#                 username = a.split("@")[0]
+#                 fullname = username.split(".")[0].split("_")
+#                 if len(fullname)==3:
+#                     fullname.pop(1)
+#                     fullname =" ".join(fullname)
+#                 else:
+#                     fullname =" ".join(fullname)
+#                 instagram = Instagram()
+#                 instagram.createAccount(a, fullname,username,'temp_password', True)
+#             else:
+#                 m = sql.Select(["*"]).From('emails').Where([("id",usedby),("hasinstagram","0")]).Run()[0]
+#                 u=m['email']
+#                 username = u.split("@")[0]
+#                 fullname = username.split(".")[0].split("_")
+#                 if len(fullname)==3:
+#                     fullname.pop(1)
+#                     fullname =" ".join(fullname)
+#                 else:
+#                     fullname =" ".join(fullname)
+#                 instagram = Instagram()
+#                 instagram.createAccount(u, fullname, username, 'temp_password', True)
+#         else:
+#             users = RandomUser()
+#             for user in users.generate(1):
+#                 ppjson(user)
+#                 sys.exit()
+#     except KeyboardInterrupt:
+#         print()
+#         Error.warn("EJECUCION DETENIDA POR EL USUSARIO".center(70,'.'))
+#         sys.exit()
+#
+#     """
+#         en esta parte se escoje si se crean cuentas de correo o se utilizan
+#         de una base de datos
+#
+#         despues de crear o selecionar la cuenta de correo
+#         procedemos a crear la cuentas de instagram
+#
+#     """
