@@ -2,4 +2,4 @@
 
 
 **install requerimients**.
-pip install --user -r requerimientos.txt
+> pip install --user -r requerimientos.txt
