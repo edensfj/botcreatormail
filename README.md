@@ -1,5 +1,5 @@
 # botcreatoremail
 
 
-**install requerimients**\n\n
+**install requerimients**.
 pip install --user -r requerimientos.txt
