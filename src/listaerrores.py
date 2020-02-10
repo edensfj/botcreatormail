@@ -48,14 +48,11 @@ class Error:
 
         sleep(timeSleep)
         """
-
         0 = advertencia
         1 = ERROR FATAL
         2 = ERROR FATAL
         3 = ERROR FATAL
         4 = ERROR: entrada vacia
-
-
         """
         errors = [
             'ADVERTENCIA!!',

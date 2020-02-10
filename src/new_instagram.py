@@ -30,6 +30,7 @@ class Instagram:
     webCreateUrlAttempt = "https://www.instagram.com/accounts/web_create_ajax/attempt/"
     webCreateUrl = "https://www.instagram.com/accounts/web_create_ajax/"
     webCreateUrlSharedData = "https://www.instagram.com/data/shared_data/"
+    webLoginUrl = "https://www.instagram.com/accounts/login/ajax/"
     ######## varibles globales ########
 
     csrftoken = None
@@ -245,6 +246,12 @@ class Instagram:
             else:
                 Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
                 ppjson(requests_create.json())
+                if requests_create.status_code==400:
+                    Error.warn("La cuenta de instagram fue creada.")
+                    Error.executing(f"Guardando cuenta {self.username} en base de datos",self.listerrorExecutinModulo)
+                    self.sql.createInstagramAccont(username=self.username,password=self.password,createdby=self.createdby,usedby=self.usedby)
+                    Error.warn("Tenemos inconvenientes para activar cuenta de instagram")
+
                 if requests_create.status_code==429:
                     self.waitrefresh()
                     # ppjson(requests_create.json())
@@ -352,4 +359,26 @@ class Instagram:
         else:
             # ppjson(r)
             self.postCreateAccount()
-            Error.e(1,"FIN DE CONDIGO")
+            Error.e(1,"FIN DE CODIGO")
+
+    def login(self,username,password='temp_password',enc_password="#PWD_INSTAGRAM_BROWSER:6:1581326795652:AfVQAES3SDQpLiXhMquGh27QjTmdrCh+ZVdKlpRntC4W/xYAcKGenKfTDEU/HfIWGWBHtMeXl+figp3vK+KnJB0aAW5VijtZQogHwBrN5l52QLs5gAmn9WEGmtyROg9ZYplxDH2GF7rEkXaezCAOhqI="):
+        self.username = str(username)
+        self.password = str(password)
+        self.enc_password = str(enc_password)
+        formData = {
+            "username":self.username,
+            "password":self.password,
+            "enc_password":self.enc_password,
+            "queryParams":"{\"source\":\"auth_switcher\"}",
+            "optIntoOneTap":"false"
+        }
+        """
+            respuesta
+            {
+                "authenticated":true,   / false
+                "user":true,
+                "userId":"3684606414",
+                "oneTapPrompt":false,
+                "reactivated":true,
+                "status":"ok"
+        """
