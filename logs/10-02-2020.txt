@@ -160,3 +160,39 @@
 10/02/2020, 08:09:03  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f59fbdfc6d0>: Failed to establish a new connection: [Errno 110] Connection timed out')))[0m
 10/02/2020, 08:09:04  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
 10/02/2020, 08:09:04  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 08:11:13  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 08:11:13  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /data/shared_data/ (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7f59fbe060a0>: Failed to establish a new connection: [Errno 110] Connection timed out')))[0m
+10/02/2020, 08:11:13  =>  [INSTAGRAM]	➔  Cambiando proxy para esta Session
+10/02/2020, 08:11:13  =>  [S-RANDPROXY]	➔  Proxy [http://87.250.218.12:33759] seleccionado.
+10/02/2020, 08:11:13  =>  [INSTAGRAM]	➔  Ahora el proxy http://87.250.218.12:33759 esta en uso
+10/02/2020, 08:11:14  =>  [INSTAGRAM]	➔  Estableciendo conexion inicial
+10/02/2020, 08:11:22  =>  [INSTAGRAM]	➔  Actualizando Header
+10/02/2020, 08:11:22  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 08:11:22  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 08:11:23  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 08:11:24  =>  [ [32m✔[39m ]	[32m................Estatus code: 200.................[0m
+10/02/2020, 08:11:24  =>  [[31m 𐄂[39m ]	[0mSe encontraron errores al crear la cuenta de instagram, error type: [31msignup_block[0m
+10/02/2020, 08:11:24  =>  [ [33m⚠[39m ]	[33mError en: [ip][0m
+10/02/2020, 08:11:24  =>  [INSTAGRAM]	➔  [ip]: Tu dirección IP se reportó como un proxy abierto. Si crees que se trata de un error, visita http://help.instagram.com/
+10/02/2020, 08:11:25  =>  [INSTAGRAM]	➔  Cambiando proxy para esta Session
+10/02/2020, 08:11:25  =>  [S-RANDPROXY]	➔  Proxy [http://197.245.230.122:48918] seleccionado.
+10/02/2020, 08:11:25  =>  [INSTAGRAM]	➔  Ahora el proxy http://197.245.230.122:48918 esta en uso
+10/02/2020, 08:11:26  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 08:11:26  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 08:11:26  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 08:11:38  =>  [ [32m✔[39m ]	[32m................Estatus code: 200.................[0m
+10/02/2020, 08:11:38  =>  [[31m 𐄂[39m ]	[0mSe encontraron errores al crear la cuenta de instagram, error type: [31msignup_block[0m
+10/02/2020, 08:11:38  =>  [ [33m⚠[39m ]	[33mError en: [ip][0m
+10/02/2020, 08:11:38  =>  [INSTAGRAM]	➔  [ip]: Tu dirección IP se reportó como un proxy abierto. Si crees que se trata de un error, visita http://help.instagram.com/
+10/02/2020, 08:11:40  =>  [INSTAGRAM]	➔  Cambiando proxy para esta Session
+10/02/2020, 08:11:40  =>  [S-RANDPROXY]	➔  Proxy [http://77.94.144.164:3128] seleccionado.
+10/02/2020, 08:11:40  =>  [INSTAGRAM]	➔  Ahora el proxy http://77.94.144.164:3128 esta en uso
+10/02/2020, 08:11:40  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 08:11:40  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 08:11:40  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
+10/02/2020, 08:12:23  =>  [[31m 𐄂[39m ]	[0mNo es posible hacer la conexion a INSTAGRAM
+10/02/2020, 08:12:23  =>  [ [33m⚠[39m ]	[33mHTTPSConnectionPool(host='www.instagram.com', port=443): Max retries exceeded with url: /accounts/web_create_ajax/ (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(104, 'Connection reset by peer')))[0m
+10/02/2020, 08:12:23  =>  [ [34m![39m ]	[34m..............Intentando reconectar...............[0m
+10/02/2020, 08:12:24  =>  [ [34m![39m ]	[34mPreparando INSTAGRAM para creacion de cuentas[0m
+10/02/2020, 08:12:24  =>  [INSTAGRAM]	➔  Generando FormData
+10/02/2020, 08:12:24  =>  [INSTAGRAM]	➔  Creando cuenta de instagram
