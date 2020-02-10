@@ -1,4 +1,3 @@
-selenium
 requests
 xlrd
 beautifulsoup4
