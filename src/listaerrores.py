@@ -41,9 +41,9 @@ class Error:
         return print(mensaje)
     def warn(msg=''):
         sleep(timeSleep)
-        mensaje = f'[ {Fore.YELLOW}'u"\u26A0"f'{Fore.RESET} ]\t{Fore.YELLOW}{msg}{Style.RESET_ALL}'
+        mensaje = f'[ {Fore.YELLOW}'u"\u26A0"f'{Fore.RESET} ]\t{Fore.YELLOW}{msg[:100:]}...{Style.RESET_ALL}'
         append_new_line(mensaje)
-        return print(mensaje[:100:])
+        return print(mensaje)
     def e(error=0,msg=''):
 
         sleep(timeSleep)

@@ -98,6 +98,9 @@ class Instagram:
         })
         try:
             requests_start = self.session.get(self.webCreateUrlSharedData)
+        except ProxyError:
+            self.changeProxy()
+            self.initialConnect()
         except Exception as e:
             Error.e(1,f"No es posible hacer la conexion a {self.listerrorExecutinModulo}")
             Error.warn(e)
