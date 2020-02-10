@@ -1,0 +1,17 @@
+selenium
+requests
+xlrd
+beautifulsoup4
+xlsxwriter
+unidecode
+mysql
+fake_useragent
+PrettyTable
+pprintjson
+urllib3
+lxml
+certifi
+MechanicalSoup
+soupsieve
+numpy
+pycrypto
