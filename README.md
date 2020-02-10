@@ -1,3 +1,5 @@
 # botcreatoremail
 
-configurar base de dato en arcivo src/ config.py
+
+**install requerimients**\n
+pip install --user -r requerimientos.txt
