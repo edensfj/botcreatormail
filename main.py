@@ -28,6 +28,7 @@ passhush  = BotConfig["hushmail"]["loginPass"]
 
 sql = Sql()
 
+
 f = sql.lastEmailAliasAvailable()
 if f:
     createdby = f['createdby']

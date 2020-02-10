@@ -19,7 +19,6 @@ class Sql:
             self.Update.Where.db = self
             self.Delete.db = self
             self.Select.db = self
-
     def query(self,sql):
         Error.executing("Ejecutando Query",self.listerrorExecutinModulo)
         self.cursor.execute(sql)
@@ -87,7 +86,6 @@ class Sql:
             if not idemail:
                 Error.warn(f"No es posible insertar el alias {alias} en la base de datos, El ID del email es incorrecto")
                 return False
-
         try:
             self.cursor.execute(f"INSERT INTO alias(alias,idemail) VALUES('{alias}','{idemail}')")
         except Exception as e:
@@ -166,6 +164,29 @@ class Sql:
 
 
         self.Update(tabla,arr).Where([("id",email)])
+    def createInstagramAccont(self,**columns):
+        sql = "INSERT INTO instagram"
+        sql += "("
+        values = " VALUES ("
+        i=1
+        for column in columns:
+            if i==len(columns):
+                sql += "{})".format(str(column))
+                values += "'{}')".format(str(columns[column]))
+            else:
+                sql += "{},".format(str(column))
+                values += "'{}',".format(str(columns[column]))
+            i += 1
+        try:
+            self.cursor.execute(sql+values)
+        except Exception as e:
+            Error.e(1,f"No fue posible insertar la cuenta de instagram en la base de datos")
+            Error.warn(e)
+            return False
+        else:
+            self.db.commit()
+            Error.ok(f"Cuenta de instagram se agrego correctamente.")
+            return self.cursor.lastrowid
     class Select:
         db=None
         def __init__(self,arr=[]):

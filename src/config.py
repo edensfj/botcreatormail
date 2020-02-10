@@ -7,7 +7,7 @@ LOGS_DIR = "%s/logs/"%(BASE_DIR)
 Config = {
     "hushmail":{
         "loginEmail":"edens0hulk@hushmail.com",
-        "loginPass":"edens.123.321",
+        "loginPass":"",
     },
     "mysql":{
         "host":"localhost",
