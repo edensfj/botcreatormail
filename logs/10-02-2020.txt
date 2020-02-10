@@ -1,0 +1,10 @@
+10/02/2020, 02:19:05  =>  [ [34m![39m ]	[34mCreando Conexion a base de datos MYSQL [localhost][0m
+10/02/2020, 02:19:05  =>  [ [32m✔[39m ]	[32mConexion a MYSQL establecida como User:[fifi], DB:[botalex][0m
+10/02/2020, 02:19:05  =>  [SQL]	➔  Buscando un Email valido para instagram.
+10/02/2020, 02:19:05  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 02:19:05  =>  [ [34m![39m ]	[34mSe encontro Email valido para instagram[0m
+10/02/2020, 02:19:05  =>  [SQL]	➔  SELECT * FROM emails WHERE id = "12" AND hasinstagram = "0"
+10/02/2020, 02:19:06  =>  [SQL]	➔  Ejecutando Query
+10/02/2020, 02:19:06  =>  [ [34m![39m ]	[34mConfigurando Instagram para su uso[0m
+10/02/2020, 02:19:06  =>  [ [34m![39m ]	[34mRestableciendo proxys[0m
+10/02/2020, 02:19:06  =>  [S-RANDPROXY]	➔  Generando lista de proxys desde https://www.sslproxies.org/
