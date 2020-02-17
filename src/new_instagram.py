@@ -70,7 +70,7 @@ class Instagram:
         #     "http":"{}".format(urlproxy),
         #     "https":"{}".format(urlproxy),
         # }
-        self.sql = Sql()
+        # self.sql = Sql()
     def setVariablesCreate(self,**kw):
         Error.executing("Definiendo variables...",self.listerrorExecutinModulo)
         for item in kw:
@@ -110,6 +110,7 @@ class Instagram:
             return rjson
         return False;
     def guardarcuentacreada(self):
+        self.sql = Sql()
         self.sql.query(f"INSERT INTO emails(nombre,email,hasinstagram,istemp) VALUES('{self.nombre}','{self.email}','1','1')");
         self.sql.db.commit()
         self.idemail = self.sql.cursor.lastrowid;
@@ -364,8 +365,9 @@ class Instagram:
             "http":"{}".format(self.urlproxy),
             "https":"{}".format(self.urlproxy),
         }
-        ppjson(s.proxies)
+        # ppjson(s.proxies)
         Error.executing(f"Creando cuenta...",self.listerrorExecutinModulo)
+        Error.info(f"{'Username:'+self.username.center(30,'~')} {'Email: '+self.email.center(50,'~')}")
         try:
             resp = s.post(self.webCreateUrl, data=formData, allow_redirects=True)
         except Exception as e:
@@ -383,24 +385,29 @@ class Instagram:
                         if error in ["error","ip"]:
                             for item in rjson['errors'][error]:
                                 Error.e(1,f"[{error}]: {item}")
+                                self.crearcuenta(**kw)
                         else:
                             for item in rjson['errors'][error]:
                                 message = item['message']
                                 code = item['code']
                                 Error.e(1,f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}")
+                                sys.exit();
                 else:
                     Error.ok("".center(widthCenter,'-'))
                     Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
                     self.guardarcuentacreada();
                     Error.ok("".center(widthCenter,'-'))
+                    sys.exit();
             elif resp.status_code==429:
                 Error.executing(f"Muchas peticiones, Se detecto como DDOS",self.listerrorExecutinModulo)
-                pass
+                sys.exit()
             elif resp.status_code==400:
                 Error.ok("".center(widthCenter,'-'))
                 Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
                 self.guardarcuentacreada();
                 Error.ok("".center(widthCenter,'-'))
+                sys.exit();
                 pass
             else:
                 Error.warn(resp.text)
+                sys.exit()

@@ -25,7 +25,7 @@ if f:
 else:
 	users = RandomUser()
 	for user in users.generate(1):
-		tm_ = TempMail()
+		tm_ = TempMail(user['username'])
 		variables = {
 			"email":tm_.getEmailLogin(),
 			"username":user['username'],
