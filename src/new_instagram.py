@@ -2,7 +2,6 @@ import requests,time, sys, urllib,os,random
 from pprintjson import pprintjson as ppjson
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from prettytable import PrettyTable
 
 from src.listaerrores import Error,Fore,Style
 from src.new_sqlconnect import Sql
@@ -122,35 +121,11 @@ class Instagram:
             return rjson
     def emailIsTaken(self):
         Error.executing(f"el correo {self.email} alparecer esta en uso.",self.listerrorExecutinModulo)
-        r = self.sql.Select(["*"]).From(self.table).Where([("id",self.idemail)]).Limit("1").Run()[0]
-        emailErrors = r["errors"]
-        if emailErrors > self.errorMaxIntent:
-            Error.executing(f"El {self.column}:[{self.email}] probado para la creacion, cuenta con [{emailErrors}] errores registrados, se procedera a omision",self.listerrorExecutinModulo)
-            Error.executing(f"Actualizando estado del {self.column}, ID:{self.idemail} en la base de datos a 2",self.listerrorExecutinModulo)
-            self.sql.Update(self.table,[("hasinstagram","2")]).Where([("id",self.idemail)])
-            self.setNewEmail()
-            self.postCreateAccount()
-        else:
-            Error.executing(f"Intentando crear cuenta nuevamente con: {self.email}",self.listerrorExecutinModulo)
-            self.sql.Update(self.table,[("errors","{}".format(emailErrors+1))]).Where([("id",self.idemail)])
-            self.postCreateAccount()
-    def setNewEmail(self):
-        Error.executing(f"Creando email temporal",self.listerrorExecutinModulo)
         self.email = self.tempmail.getEmailLogin(True)
-        self.sql.query("INSERT INTO emails(nombre,email,istemp) VALUES('{}','{}','{}')".format(self.nombre,self.email,'1'))
-        self.sql.db.commit()
-        self.idemail = self.sql.cursor.lastrowid
-        self.usedby = self.idemail
-        self.createdby='0'
-        self.table="emails"
-        self.column="email";
-        Error.executing("Se actualizo el email y los datos",self.listerrorExecutinModulo)
+        Error.executing(f"Se actualizo a: {self.email}",self.listerrorExecutinModulo)
+    def setNewEmail(self):
+        self.email = self.tempmail.getEmailLogin(True)
         return self.email
-    def setPretyTable(self,arr=[],show=True):
-        self.p_table = PrettyTable(["ID","email/alias","Username","Nombre","table","column","createdby","usedby"])
-        self.p_table.add_row(arr)
-        if show:
-            print(self.p_table)
     def postCreateAccount(self):
 
         Error.info(f"{'Username:'+self.username.center(35,'~')}_{'Email: '+self.email.center(55,'~')}")
@@ -199,7 +174,6 @@ class Instagram:
                                     time.sleep(1)
                                 if error=='ip':
                                     self.changeProxy()
-                                    self.postCreateAccount()
                             else:
                                 for item in rjson['errors'][error]:
                                     message = item['message']
@@ -207,6 +181,10 @@ class Instagram:
                                     Error.e(1,f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}")
                                     if code == 'email_is_taken':
                                         self.emailIsTaken()
+                                    if code == 'username_is_taken':
+                                        Error.info("cambio el nombre de usuario".center(widthCenter,'-'))
+                                        time.sleep(5)
+                    self.postCreateAccount()
                 pass
             elif resp.status_code===429:
                 pass
@@ -281,31 +259,20 @@ class Instagram:
         self.waitTimeRange *= 2
         self.postCreateAccount()
     def checkGenericRequestError(self):
+        self.session = requests.Session();
         Error.info("Intentando encontrar solucion a errores")
         formData2 = {
-            'email': '{}'.format(self.email),
-            'password': '{}'.format(self.password),
-            'enc_password': '{}'.format(self.enc_password),
-            'username': '{}'.format(self.username),
-            'first_name': '{}'.format(urllib.parse.quote_plus(self.nombre)),
+            'email': self.email,
+            'password': self.password,
+            'username': self.username,
+            'first_name': self.nombre,
             'opt_into_one_tap' : 'false'
         }
-        self.session.headers.update({
-            "Accept-Language":self.AcceptLanguage,
-            "Content-Type":"application/x-www-form-urlencoded",
-            "X-CSRFToken":self.csrftoken,
-            "X-IG-App-ID":"936619743392459",
-            "X-IG-WWW-Claim":"0",
-            "X-Instagram-AJAX":self.xInstagramAJAX,
-            "X-Requested-With":"XMLHttpRequest",
-        })
-        self.session.cookies.update({
-            "csrftoken":self.csrftoken,
-            "ig_did":self.deviceId,
-        })
+        self.session.headers.update(self.headers)
+        self.session.cookies.update(self.cookies)
         Error.executing("Accediendo al attempt",self.listerrorExecutinModulo)
         try:
-            checkG = self.session.post(self.webCreateUrlAttempt, data=formData2, allow_redirects=True)
+            check = self.session.post(self.webCreateUrlAttempt, data=formData2, allow_redirects=True)
         except Exception as e:
             Error.e(1,f"No es posible hacer la conexion a {self.listerrorExecutinModulo}")
             Error.warn(e)
@@ -318,45 +285,51 @@ class Instagram:
                 Error.info("Intentando reconectar".center(50,'.'))
                 self.checkGenericRequestError()
         else:
-            ppjson(checkG.json())
-            if checkG.status_code==200:
-                Error.info(f"Estatus code: {checkG.status_code}".center(50,'.'))
+            if check.status_code==200:
+                Error.info(f"Estatus code: {check.status_code}".center(widthCenter,'.'))
+                jsoncheck = check.json();
+                new_username = jsoncheck["username_suggestions"]
+                errorType = jsoncheck["error_type"]
+                Error.e(1,f"Tipo de error: {Fore.RED}{errorType}{Style.RESET_ALL}")
+                if errorType == 'form_validation_error':
+                    if 'errors' in  jsoncheck:
+                        jsoncheckerrors = jsoncheck['errors']
+                        for err in jsoncheckerrors:
+                            Error.e(1,f"Error en: [{err}]".center(widthCenter,'-'))
+                            if err in ['email','username']:
+                                for item in jsoncheckerrors[err]:
+                                    m=item['message']
+                                    c=item['code']
+                                    Error.e(1,f"[{Fore.RED}{c}{Style.RESET_ALL}]: {m}")
+                                    if c=='email_is_taken':
+                                        self.emailIsTaken()
+                                    elif c==='username_is_taken':
+                                        self.username = random.choice(new_username)
+                                        Error.executing(f"Actualizando username a: {self.username}",self.listerrorExecutinModulo)
+                    self.postCreateAccount()
+                else:
+                    Error.e(1,"".center(widthCenter,'-'))
+                    ppjson(jsoncheck)
+                    Error.e(1,"".center(widthCenter,'-'))
+                    pass
+            elif check.status_code==429:
+                Error.warn(f"Estatus code: {check.status_code}".center(widthCenter,'.'))
+                self.waitrefresh()
             else:
-                Error.warn(f"Estatus code: {checkG.status_code}".center(50,'.'))
+                ppjson(check.json())
+                Error.warn(check.text);
+
+
+
             if checkG.status_code==200:
                 j=checkG.json()
                 new_username = j["username_suggestions"]
                 errorType = j["error_type"]
                 Error.e(1,f"Tipo de error: {Fore.RED}{errorType}{Style.RESET_ALL}")
-                if errorType == 'form_validation_error':
-                    if 'errors' in j:
-                        je=j['errors']
-                        for err in je:
-                            Error.warn(f"Error en: [{err}]")
-                            if err=='email':
-                                for item in je[err]:
-                                    m=item['message']
-                                    c=item['code']
-                                    Error.executing(f"[{Fore.RED}{c}{Style.RESET_ALL}]: {m}",self.listerrorExecutinModulo)
-                                    if c=='email_is_taken':
-                                        Error.executing(f"Actualizando estado del {self.column} en la base de datos a 2",self.listerrorExecutinModulo)
-                                        self.sql.Update(self.table,[("hasinstagram","2")]).Where([("id",self.idemail)])
-                                        self.setNewEmail()
-                            elif err=='username':
-                                for item in je[err]:
-                                    m=item['message']
-                                    c=item['code']
-                                    Error.executing(f"[{Fore.RED}{c}{Style.RESET_ALL}]: {m}",self.listerrorExecutinModulo)
-                                    if c=='username_is_taken':
-                                        self.username = random.choice(new_username)
-                                        Error.executing(f"Actualizando username a: {self.username}",self.listerrorExecutinModulo)
-                ppjson(j)
-                time.sleep(2)
+
                 self.postCreateAccount()
-            elif checkG.status_code==429:
-                self.waitrefresh()
-            else:
-                print(checkG.text)
+
+
     def createAccount(self,**kw):
         self.setVariablesCreate(**kw)
         self.initialConnect()
