@@ -16,15 +16,7 @@ print()
 from src.new_randomuser import RandomUser
 from src.new_instagram import Instagram
 from pprintjson import pprintjson as ppjson
-# from bs4 import BeautifulSoup
 import sys
-# import json
-# import signal
-#### inicio de programa ########
-
-
-emailhush = BotConfig["hushmail"]["loginEmail"]
-passhush  = BotConfig["hushmail"]["loginPass"]
 
 sql = Sql()
 

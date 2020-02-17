@@ -363,25 +363,3 @@ class Instagram:
             # ppjson(r)
             self.postCreateAccount()
             Error.e(1,"FIN DE CODIGO")
-
-    def login(self,username,password='temp_password',enc_password="#PWD_INSTAGRAM_BROWSER:6:1581326795652:AfVQAES3SDQpLiXhMquGh27QjTmdrCh+ZVdKlpRntC4W/xYAcKGenKfTDEU/HfIWGWBHtMeXl+figp3vK+KnJB0aAW5VijtZQogHwBrN5l52QLs5gAmn9WEGmtyROg9ZYplxDH2GF7rEkXaezCAOhqI="):
-        self.username = str(username)
-        self.password = str(password)
-        self.enc_password = str(enc_password)
-        formData = {
-            "username":self.username,
-            "password":self.password,
-            "enc_password":self.enc_password,
-            "queryParams":"{\"source\":\"auth_switcher\"}",
-            "optIntoOneTap":"false"
-        }
-        """
-            respuesta
-            {
-                "authenticated":true,   / false
-                "user":true,
-                "userId":"3684606414",
-                "oneTapPrompt":false,
-                "reactivated":true,
-                "status":"ok"
-        """
