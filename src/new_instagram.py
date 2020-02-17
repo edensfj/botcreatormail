@@ -66,10 +66,10 @@ class Instagram:
         urlproxy = self.proxy.get()
         self.session = requests.Session()
         Error.executing("Configurando proxy",self.listerrorExecutinModulo)
-        self.session.proxies = {
-            "http":"{}".format(urlproxy),
-            "https":"{}".format(urlproxy),
-        }
+        # self.session.proxies = {
+        #     "http":"{}".format(urlproxy),
+        #     "https":"{}".format(urlproxy),
+        # }
         self.sql = Sql()
     def setVariablesCreate(self,**kw):
         Error.executing("Definiendo variables...",self.listerrorExecutinModulo)
@@ -77,7 +77,7 @@ class Instagram:
             setattr(self,item,kw[item])
         return False;
     def initialConnect(self):
-        select.changeProxy()
+        self.changeProxy()
         Error.executing(f"Estableciendo conexion inicial",self.listerrorExecutinModulo)
         try:
             resp = requests.get(self.webCreateUrlSharedData)
@@ -107,25 +107,6 @@ class Instagram:
             self.deviceId = rjson['device_id']
             self.public_key = rjson['encryption']['public_key']
             self.key_id = rjson['encryption']['key_id']
-            # Error.executing("Actualizando Header",self.listerrorExecutinModulo)
-            # self.headers = {
-            #     "Accept-Language":self.AcceptLanguage,
-            #     "Content-Type":"application/x-www-form-urlencoded",
-            #     "X-CSRFToken":self.csrftoken,
-            #     "X-IG-App-ID":"936619743392459",
-            #     "X-IG-WWW-Claim":"0",
-            #     "X-Instagram-AJAX":self.xInstagramAJAX,
-            #     "X-Requested-With":"XMLHttpRequest",
-            #     "Host": "www.instagram.com",
-            #     "Origin": "https://www.instagram.com",
-            #     "Referer":"https://www.instagram.com/",
-            #     "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0",
-            # }
-            # Error.executing("Actualizando Cookies",self.listerrorExecutinModulo)
-            # self.cookies = {
-            #     "csrftoken":self.csrftoken,
-            #     "ig_did":self.deviceId,
-            # }
             return rjson
         return False;
     def guardarcuentacreada(self):
@@ -247,17 +228,23 @@ class Instagram:
         return False
     def changeProxy(self):
         Error.executing("Cambiando proxy para esta Session",self.listerrorExecutinModulo)
-        urlproxy = self.proxy.get()
-        self.urlproxy = urlproxy;
-        Error.executing(f"Probando conexion del proxy: {self.urlproxy}",self.listerrorExecutinModulo)
+        self.urlproxy = self.proxy.get()
+        Error.info(f"Probando conexion del proxy: {self.urlproxy}")
+        self.listerrorExecutinModulo = "INSTAGRAM"
+        self.session.proxies = {
+            "http":"{}".format(self.urlproxy),
+            "https":"{}".format(self.urlproxy),
+        }
         try:
             r = self.session.get("https://api.ipify.org/")
         except Exception as e:
+            Error.e(1,"PROXY NO CONNECT")
+            self.changeProxy();
             return False
         else:
-            self.listerrorExecutinModulo += " {} ".format(r.text)
-        Error.executing(f"Ahora el proxy {urlproxy} esta en uso",self.listerrorExecutinModulo)
-        return urlproxy;
+            self.listerrorExecutinModulo = f"INSTAGRAM {Fore.RED}{r.text}{Style.RESET_ALL} "
+            Error.executing(f"Ahora el proxy {self.urlproxy} esta en uso",self.listerrorExecutinModulo)
+        return self.urlproxy;
     def waitrefresh(self):
         Error.executing(f"Muchas peticiones, Se detecto como DDOS",self.listerrorExecutinModulo)
         for i in tqdm(range(self.waitTimeRange)):
@@ -377,10 +364,12 @@ class Instagram:
             "http":"{}".format(self.urlproxy),
             "https":"{}".format(self.urlproxy),
         }
+        ppjson(s.proxies)
+        Error.executing(f"Creando cuenta...",self.listerrorExecutinModulo)
         try:
             resp = s.post(self.webCreateUrl, data=formData, allow_redirects=True)
         except Exception as e:
-            Error.info("Intentando reconectar".center(50,'.'))
+            Error.info("Intentando reconectar con instagram".center(50,'.'))
             self.crearcuenta(**kw)
         else:
             Error.info(f"Status Code: {resp.status_code}".center(widthCenter,'.'))
@@ -405,7 +394,7 @@ class Instagram:
                     self.guardarcuentacreada();
                     Error.ok("".center(widthCenter,'-'))
             elif resp.status_code==429:
-                self.waitrefresh()
+                Error.executing(f"Muchas peticiones, Se detecto como DDOS",self.listerrorExecutinModulo)
                 pass
             elif resp.status_code==400:
                 Error.ok("".center(widthCenter,'-'))
