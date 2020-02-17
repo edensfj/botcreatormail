@@ -184,6 +184,29 @@ class Instagram:
         else:
             Error.info(f"Status Code: {resp.status_code}".center(widthCenter,'.'))
             if resp.status_code===200:
+                rjson = resp.json();
+                if 'errors' in rjson:
+                    errorType = rjson['error_type']
+                    Error.e(1,f"Se encontraron errores al crear la cuenta de instagram, error type: {Fore.RED}{errorType}{Style.RESET_ALL}")
+                    if errorType == 'generic_request_error':
+                        self.checkGenericRequestError()
+                    else:
+                        for error in rjson['errors']:
+                            Error.warn(f"Error en: [{error}]")
+                            if error in ["error","ip"]:
+                                for item in rjson['errors'][error]:
+                                    Error.e(1,f"[{error}]: {item}")
+                                    time.sleep(1)
+                                if error=='ip':
+                                    self.changeProxy()
+                                    self.postCreateAccount()
+                            else:
+                                for item in rjson['errors'][error]:
+                                    message = item['message']
+                                    code = item['code']
+                                    Error.e(1,f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}")
+                                    if code == 'email_is_taken':
+                                        self.emailIsTaken()
                 pass
             elif resp.status_code===429:
                 pass
@@ -193,50 +216,6 @@ class Instagram:
                 pass
         ppjson(formData)
 
-        # # self.setPretyTable([self.idemail,self.email,self.username,self.nombre,self.table,self.column,self.createdby,self.usedby])
-        # Error.info(f"Preparando {self.listerrorExecutinModulo} para creacion de cuentas")
-        # Error.executing(f"Generando FormData",self.listerrorExecutinModulo)
-        # self.password = "temp_password"
-        # self.enc_password = "#PWD_INSTAGRAM_BROWSER:6:1580446133845:AfVQAAeYuUWCpQWXu7bmSe96nvecx4D+4yretxrze80K5kIi9yybwuS7NdD08oTUIai5PWmwx98MJeV+Ec2PdK8GLtK6Wn01T6mooZnYKNg3mWOPaA671TpZFrUcjHT9yned3CTyj5WMF0sOI2wY0O4="
-        # formData = {
-        #     'email': '{}'.format(self.email),
-        #     'password': '{}'.format(self.password),
-        #     'enc_password': '{}'.format(self.enc_password),
-        #     'username': '{}'.format(self.username),
-        #     'first_name': '{}'.format(urllib.parse.quote_plus(self.nombre)),
-        #     'seamless_login_enabled' : '1',
-        #     'tos_version' : 'row',
-        #     'opt_into_one_tap' : 'false'
-        # }
-        # self.session.headers.update({
-        #     "Accept-Language":self.AcceptLanguage,
-        #     "Content-Type":"application/x-www-form-urlencoded",
-        #     "X-CSRFToken":self.csrftoken,
-        #     "X-IG-App-ID":"936619743392459",
-        #     "X-IG-WWW-Claim":"0",
-        #     "X-Instagram-AJAX":self.xInstagramAJAX,
-        #     "X-Requested-With":"XMLHttpRequest",
-        # })
-        # self.session.cookies.update({
-        #     "csrftoken":self.csrftoken,
-        #     "ig_did":self.deviceId,
-        # })
-        # # ppjson(formData)
-        # Error.executing(f"Creando cuenta de instagram",self.listerrorExecutinModulo)
-        # try:
-        #     requests_create = self.session.post(self.webCreateUrl, data=formData, allow_redirects=True)
-        # except Exception as e:
-        #     Error.e(1,f"No es posible hacer la conexion a {self.listerrorExecutinModulo}")
-        #     Error.warn(e)
-        #     if self.errorReconect>self.errorMaxReconect:
-        #         self.errorReconect = 0
-        #         self.changeProxy()
-        #         self.postCreateAccount()
-        #     else:
-        #         self.errorReconect += 1
-        #         Error.info("Intentando reconectar".center(50,'.'))
-        #         self.postCreateAccount()
-        # else:
         #     if requests_create.status_code==200:
         #         Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
         #         rjson = requests_create.json()
