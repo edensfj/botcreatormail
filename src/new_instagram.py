@@ -228,10 +228,10 @@ class Instagram:
                 Error.warn(resp.text)
         return False
     def changeProxy(self):
+        self.listerrorExecutinModulo = "INSTAGRAM"
         Error.executing("Cambiando proxy para esta Session",self.listerrorExecutinModulo)
         self.urlproxy = self.proxy.get()
         Error.info(f"Probando conexion del proxy: {self.urlproxy}")
-        self.listerrorExecutinModulo = "INSTAGRAM"
         self.session.proxies = {
             "http":"{}".format(self.urlproxy),
             "https":"{}".format(self.urlproxy),
