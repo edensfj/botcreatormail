@@ -14,7 +14,7 @@ class Sql:
             Error.e(1,"Es necesaria una conexion a una base de datos para poder continuar")
             sys.exit()
         else:
-            Error.ok(f"Conexion a MYSQL establecida como User:[{user}], DB:[{database}]")
+            Error.executing(f"Conexion a MYSQL establecida como User:[{user}], DB:[{database}]",self.listerrorExecutinModulo)
             self.cursor = self.db.cursor()
             self.Update.Where.db = self
             self.Delete.db = self
@@ -94,7 +94,7 @@ class Sql:
             return False
         else:
             self.db.commit()
-            Error.ok(f"[{alias}] se insertó correctamente")
+            Error.executing(f"[{alias}] se insertó correctamente",self.listerrorExecutinModulo)
             return self.cursor.lastrowid
     def lastEmailAliasAvailable(self,social='instagram'):
         Error.executing(f"Buscando un Email valido para {social}.",self.listerrorExecutinModulo)
@@ -537,12 +537,12 @@ class Sql:
                         Error.info(f"Se actualizo {numwrro} tabla")
                     else:
                         Error.warn("No se actualizo la base de datos")
-    def __del__(self):
-#        Error.executing("Cerrando conexion",self.listerrorExecutinModulo)
-        try:
-            self.db.close()
-        except Exception as e:
-            Error.e(1,e)
-        else:
-            print("Conexion DB cerrada")
-#            Error.ok("Conexion DB cerrada")
+#     def __del__(self):
+# #        Error.executing("Cerrando conexion",self.listerrorExecutinModulo)
+#         try:
+#             self.db.close()
+#         except Exception as e:
+#             Error.e(1,e)
+#         else:
+#             print("Conexion DB cerrada")
+# #            Error.ok("Conexion DB cerrada")

@@ -6,13 +6,15 @@ from src.config import *
 
 timeSleep=0.1
 def append_new_line(text_to_append):
-    """Append given text as a new line at the end of file"""
-    # Open the file in append & read mode ('a+')
     now = datetime.now()
     nombre = now.strftime("%d-%m-%Y.txt")
     fecha = now.strftime("%d/%m/%Y, %H:%M:%S")
     text_to_append = "{}  =>  {}".format(fecha,text_to_append)
-    with open("{}{}".format(LOGS_DIR,nombre), "a+") as file_object:
+    try:
+        file_object = open("{}{}".format(LOGS_DIR,nombre), "a+")
+    except Exception as e:
+        raise e
+    else:
         file_object.seek(0)
         data = file_object.read(100)
         if len(data) > 0:

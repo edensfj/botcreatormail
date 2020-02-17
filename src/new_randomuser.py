@@ -57,7 +57,7 @@ class RandomUser:
                     "country":"CO",
                     "age":random.randrange(18,50)
                 })
-            Error.ok(f"Informacion de cuentas generada: #{len(self.Users)} habilitados.")
+            Error.executing(f"Informacion de cuentas generada: #{len(self.Users)} habilitados.",self.sru_listerrorExecutinModulo)
             return self.Users
         else:
             sys.exit(Error.e(1,"FILE %s No Existe."%(file)))

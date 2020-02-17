@@ -10,6 +10,7 @@ from src.config import Config as BotConfig
 from src.new_randomproxy import RandomProxy
 from src.new_tempmail import TempMail
 
+widthCenter=100
 
 class Instagram:
     """
@@ -68,37 +69,16 @@ class Instagram:
         self.sql = Sql()
         self.tempmail = TempMail();
     def setVariablesCreate(self,**kw):
+        Error.executing("Definiendo variables...",self.listerrorExecutinModulo)
         for item in kw:
-            if item in ['setAvailableEmail']:
-                continue
-            kw[item] = str(kw[item])
             setattr(self,item,kw[item])
-        if self.email.isdigit():
-            self.email = self.sql.getEmailById(self.email)
-        check = self.sql.Select(["id"]).From(self.table).Where([(self.column,self.email)]).Run()
-        if len(check)==0:
-            self.table="alias"
-            self.column="alias";
-            self.createdby='1'
-            check = self.sql.Select(["id"]).From(self.table).Where([(self.column,self.email)]).Run()
-            if len(check)==0:
-                return False
-            else:
-                self.idemail=check[0]['id']
-        else:
-            self.idemail=check[0]['id']
-        self.idemail = str(self.idemail)
-        self.usedby = self.idemail
     def initialConnect(self):
         Error.executing(f"Estableciendo conexion inicial",self.listerrorExecutinModulo)
-        self.session.headers.update({
-            "content-language":"es-la",
-            "Accept-Language":"es-CO",
-            "Content-Type":"application/x-www-form-urlencoded",
-        })
         try:
-            requests_start = self.session.get(self.webCreateUrlSharedData)
-        except ProxyError:
+            resp = self.session.get(self.webCreateUrlSharedData)
+        except requests.exceptions.ProxyError as err:
+            Error.warn("Reconectando".center(widthCenter,'-'))
+            Error.e(1,err)
             self.changeProxy()
             self.initialConnect()
         except Exception as e:
@@ -110,18 +90,18 @@ class Instagram:
                 self.initialConnect()
             else:
                 self.errorReconect += 1
-                Error.info("Intentando reconectar".center(50,'.'))
+                Error.info("Intentando reconectar".center(widthCenter,'.'))
                 self.initialConnect()
         else:
-            Error.executing(f"Actualizando Header",self.listerrorExecutinModulo)
-            rjson=requests_start.json()
+            Error.executing("Actualizando Header",self.listerrorExecutinModulo)
+            rjson=resp.json()
             self.csrftoken = rjson['config']['csrf_token']
             self.xInstagramAJAX = rjson['rollout_hash']
             self.AcceptLanguage = rjson['language_code']
             self.deviceId = rjson['device_id']
             self.public_key = rjson['encryption']['public_key']
             self.key_id = rjson['encryption']['key_id']
-            self.session.headers.update({
+            self.headers = {
                 "Accept-Language":self.AcceptLanguage,
                 "Content-Type":"application/x-www-form-urlencoded",
                 "X-CSRFToken":self.csrftoken,
@@ -129,11 +109,16 @@ class Instagram:
                 "X-IG-WWW-Claim":"0",
                 "X-Instagram-AJAX":self.xInstagramAJAX,
                 "X-Requested-With":"XMLHttpRequest",
-            })
-            self.session.cookies.update({
+                "Host": "www.instagram.com",
+                "Origin": "https://www.instagram.com",
+                "Referer":"https://www.instagram.com/",
+                "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0",
+            }
+            Error.executing("Actualizando Cookies",self.listerrorExecutinModulo)
+            self.cookies = {
                 "csrftoken":self.csrftoken,
                 "ig_did":self.deviceId,
-            })
+            }
             return rjson
     def emailIsTaken(self):
         Error.executing(f"el correo {self.email} alparecer esta en uso.",self.listerrorExecutinModulo)
@@ -149,8 +134,6 @@ class Instagram:
             Error.executing(f"Intentando crear cuenta nuevamente con: {self.email}",self.listerrorExecutinModulo)
             self.sql.Update(self.table,[("errors","{}".format(emailErrors+1))]).Where([("id",self.idemail)])
             self.postCreateAccount()
-    def fixError(self,error):
-        print(error)
     def setNewEmail(self):
         Error.executing(f"Creando email temporal",self.listerrorExecutinModulo)
         self.email = self.tempmail.getEmailLogin(True)
@@ -169,38 +152,24 @@ class Instagram:
         if show:
             print(self.p_table)
     def postCreateAccount(self):
-        self.setPretyTable([self.idemail,self.email,self.username,self.nombre,self.table,self.column,self.createdby,self.usedby])
-        Error.info(f"Preparando {self.listerrorExecutinModulo} para creacion de cuentas")
-        Error.executing(f"Generando FormData",self.listerrorExecutinModulo)
-        self.password = "temp_password"
-        self.enc_password = "#PWD_INSTAGRAM_BROWSER:6:1580446133845:AfVQAAeYuUWCpQWXu7bmSe96nvecx4D+4yretxrze80K5kIi9yybwuS7NdD08oTUIai5PWmwx98MJeV+Ec2PdK8GLtK6Wn01T6mooZnYKNg3mWOPaA671TpZFrUcjHT9yned3CTyj5WMF0sOI2wY0O4="
+
+        Error.info(f"{'Username:'+self.username.center(35,'~')}_{'Email: '+self.email.center(55,'~')}")
         formData = {
-            'email': '{}'.format(self.email),
-            'password': '{}'.format(self.password),
-            'enc_password': '{}'.format(self.enc_password),
-            'username': '{}'.format(self.username),
-            'first_name': '{}'.format(urllib.parse.quote_plus(self.nombre)),
+            'email':self.email,
+            'password':self.password,
+            'username':self.username,
+            'first_name':self.nombre,
             'seamless_login_enabled' : '1',
             'tos_version' : 'row',
             'opt_into_one_tap' : 'false'
         }
-        self.session.headers.update({
-            "Accept-Language":self.AcceptLanguage,
-            "Content-Type":"application/x-www-form-urlencoded",
-            "X-CSRFToken":self.csrftoken,
-            "X-IG-App-ID":"936619743392459",
-            "X-IG-WWW-Claim":"0",
-            "X-Instagram-AJAX":self.xInstagramAJAX,
-            "X-Requested-With":"XMLHttpRequest",
-        })
-        self.session.cookies.update({
-            "csrftoken":self.csrftoken,
-            "ig_did":self.deviceId,
-        })
-        # ppjson(formData)
-        Error.executing(f"Creando cuenta de instagram",self.listerrorExecutinModulo)
+        self.session = requests.Session();
+        Error.executing("Actualizando Header",self.listerrorExecutinModulo)
+        self.session.headers.update(self.headers);
+        Error.executing("Actualizando Cookies",self.listerrorExecutinModulo)
+        self.session.cookies.update(self.cookies)
         try:
-            requests_create = self.session.post(self.webCreateUrl, data=formData, allow_redirects=True)
+            resp = self.session.post(self.webCreateUrl, data=formData, allow_redirects=True)
         except Exception as e:
             Error.e(1,f"No es posible hacer la conexion a {self.listerrorExecutinModulo}")
             Error.warn(e)
@@ -213,51 +182,106 @@ class Instagram:
                 Error.info("Intentando reconectar".center(50,'.'))
                 self.postCreateAccount()
         else:
-            if requests_create.status_code==200:
-                Error.ok(f"Estatus code: {requests_create.status_code}".center(50,'.'))
-                rjson = requests_create.json()
-                ppjson(rjson)
-                if 'errors' in rjson:
-                    errorType = rjson['error_type']
-                    Error.e(1,f"Se encontraron errores al crear la cuenta de instagram, error type: {Fore.RED}{errorType}{Style.RESET_ALL}")
-                    if errorType == 'generic_request_error':
-                        self.checkGenericRequestError()
-                    else:
-                        for error in rjson['errors']:
-                            Error.warn(f"Error en: [{error}]")
-                            if error in ["error","ip"]:
-                                for item in rjson['errors'][error]:
-                                    Error.executing(f"[{error}]: {item}",self.listerrorExecutinModulo)
-                                    time.sleep(1)
-                                if error=='ip':
-                                    self.changeProxy()
-                                    self.postCreateAccount()
-                            else:
-                                for item in rjson['errors'][error]:
-                                    message = item['message']
-                                    code = item['code']
-                                    Error.executing(f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}",self.listerrorExecutinModulo)
-                                    if code == 'email_is_taken':
-                                        self.emailIsTaken()
-                else:
-                    print()
-                    print("prosigo con la creacion de la cuenta")
-                    Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
-                    print(rjson)
-                    time.sleep(100)
-                    sys.exit()
+            Error.info(f"Status Code: {resp.status_code}".center(widthCenter,'.'))
+            if resp.status_code===200:
+                pass
+            elif resp.status_code===429:
+                pass
+            elif resp.status_code===400:
+                pass
             else:
-                Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
-                ppjson(requests_create.json())
-                if requests_create.status_code==400:
-                    Error.warn("La cuenta de instagram fue creada.")
-                    Error.executing(f"Guardando cuenta {self.username} en base de datos",self.listerrorExecutinModulo)
-                    self.sql.createInstagramAccont(username=self.username,password=self.password,createdby=self.createdby,usedby=self.usedby)
-                    Error.warn("Tenemos inconvenientes para activar cuenta de instagram")
+                pass
+        ppjson(formData)
 
-                if requests_create.status_code==429:
-                    self.waitrefresh()
-                    # ppjson(requests_create.json())
+        # # self.setPretyTable([self.idemail,self.email,self.username,self.nombre,self.table,self.column,self.createdby,self.usedby])
+        # Error.info(f"Preparando {self.listerrorExecutinModulo} para creacion de cuentas")
+        # Error.executing(f"Generando FormData",self.listerrorExecutinModulo)
+        # self.password = "temp_password"
+        # self.enc_password = "#PWD_INSTAGRAM_BROWSER:6:1580446133845:AfVQAAeYuUWCpQWXu7bmSe96nvecx4D+4yretxrze80K5kIi9yybwuS7NdD08oTUIai5PWmwx98MJeV+Ec2PdK8GLtK6Wn01T6mooZnYKNg3mWOPaA671TpZFrUcjHT9yned3CTyj5WMF0sOI2wY0O4="
+        # formData = {
+        #     'email': '{}'.format(self.email),
+        #     'password': '{}'.format(self.password),
+        #     'enc_password': '{}'.format(self.enc_password),
+        #     'username': '{}'.format(self.username),
+        #     'first_name': '{}'.format(urllib.parse.quote_plus(self.nombre)),
+        #     'seamless_login_enabled' : '1',
+        #     'tos_version' : 'row',
+        #     'opt_into_one_tap' : 'false'
+        # }
+        # self.session.headers.update({
+        #     "Accept-Language":self.AcceptLanguage,
+        #     "Content-Type":"application/x-www-form-urlencoded",
+        #     "X-CSRFToken":self.csrftoken,
+        #     "X-IG-App-ID":"936619743392459",
+        #     "X-IG-WWW-Claim":"0",
+        #     "X-Instagram-AJAX":self.xInstagramAJAX,
+        #     "X-Requested-With":"XMLHttpRequest",
+        # })
+        # self.session.cookies.update({
+        #     "csrftoken":self.csrftoken,
+        #     "ig_did":self.deviceId,
+        # })
+        # # ppjson(formData)
+        # Error.executing(f"Creando cuenta de instagram",self.listerrorExecutinModulo)
+        # try:
+        #     requests_create = self.session.post(self.webCreateUrl, data=formData, allow_redirects=True)
+        # except Exception as e:
+        #     Error.e(1,f"No es posible hacer la conexion a {self.listerrorExecutinModulo}")
+        #     Error.warn(e)
+        #     if self.errorReconect>self.errorMaxReconect:
+        #         self.errorReconect = 0
+        #         self.changeProxy()
+        #         self.postCreateAccount()
+        #     else:
+        #         self.errorReconect += 1
+        #         Error.info("Intentando reconectar".center(50,'.'))
+        #         self.postCreateAccount()
+        # else:
+        #     if requests_create.status_code==200:
+        #         Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
+        #         rjson = requests_create.json()
+        #         ppjson(rjson)
+        #         if 'errors' in rjson:
+        #             errorType = rjson['error_type']
+        #             Error.e(1,f"Se encontraron errores al crear la cuenta de instagram, error type: {Fore.RED}{errorType}{Style.RESET_ALL}")
+        #             if errorType == 'generic_request_error':
+        #                 self.checkGenericRequestError()
+        #             else:
+        #                 for error in rjson['errors']:
+        #                     Error.warn(f"Error en: [{error}]")
+        #                     if error in ["error","ip"]:
+        #                         for item in rjson['errors'][error]:
+        #                             Error.executing(f"[{error}]: {item}",self.listerrorExecutinModulo)
+        #                             time.sleep(1)
+        #                         if error=='ip':
+        #                             self.changeProxy()
+        #                             self.postCreateAccount()
+        #                     else:
+        #                         for item in rjson['errors'][error]:
+        #                             message = item['message']
+        #                             code = item['code']
+        #                             Error.executing(f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}",self.listerrorExecutinModulo)
+        #                             if code == 'email_is_taken':
+        #                                 self.emailIsTaken()
+        #         else:
+        #             print()
+        #             print("prosigo con la creacion de la cuenta")
+        #             Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
+        #             print(rjson)
+        #             time.sleep(100)
+        #             sys.exit()
+        #     else:
+        #         Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
+        #         ppjson(requests_create.json())
+        #         if requests_create.status_code==400:
+        #             Error.warn("La cuenta de instagram fue creada.")
+        #             Error.executing(f"Guardando cuenta {self.username} en base de datos",self.listerrorExecutinModulo)
+        #             self.sql.createInstagramAccont(username=self.username,password=self.password,createdby=self.createdby,usedby=self.usedby)
+        #             Error.warn("Tenemos inconvenientes para activar cuenta de instagram")
+
+        #         if requests_create.status_code==429:
+        #             self.waitrefresh()
+        #             # ppjson(requests_create.json())
     def changeProxy(self):
         Error.executing("Cambiando proxy para esta Session",self.listerrorExecutinModulo)
         urlproxy = self.proxy.get()
@@ -266,8 +290,9 @@ class Instagram:
             "https":"{}".format(urlproxy),
         }
         Error.executing(f"Ahora el proxy {urlproxy} esta en uso",self.listerrorExecutinModulo)
+        return urlproxy;
     def waitrefresh(self):
-        Error.executing(f"Esperando tiempo de fresqueo, la conexion fue detectada por systemas anti DDOS",self.listerrorExecutinModulo)
+        Error.executing(f"Muchas peticiones, Se detecto como DDOS",self.listerrorExecutinModulo)
         for i in tqdm(range(self.waitTimeRange)):
             time.sleep(0.2)
         if self.waitTimeRange >= 400:
@@ -316,9 +341,9 @@ class Instagram:
         else:
             ppjson(checkG.json())
             if checkG.status_code==200:
-                Error.ok(f"Estatus code: {checkG.status_code}".center(50,'.'))
-            else:
                 Error.info(f"Estatus code: {checkG.status_code}".center(50,'.'))
+            else:
+                Error.warn(f"Estatus code: {checkG.status_code}".center(50,'.'))
             if checkG.status_code==200:
                 j=checkG.json()
                 new_username = j["username_suggestions"]
@@ -353,13 +378,8 @@ class Instagram:
                 self.waitrefresh()
             else:
                 print(checkG.text)
-    def createAccount(self,email='',nombre='',username='',password='',setAvailableEmail=False):
-        self.setVariablesCreate(email=email,nombre=nombre,username=username,password=password,setAvailableEmail=setAvailableEmail)
-        try:
-            self.initialConnect()
-        except Exception as e:
-            Error.info(e)
-        else:
-            # ppjson(r)
-            self.postCreateAccount()
-            Error.e(1,"FIN DE CODIGO")
+    def createAccount(self,**kw):
+        self.setVariablesCreate(**kw)
+        self.initialConnect()
+        self.postCreateAccount()
+        Error.e(1,"FIN DE CODIGO")
