@@ -365,7 +365,10 @@ class Instagram:
             "http":"{}".format(self.urlproxy),
             "https":"{}".format(self.urlproxy),
         }
-        # ppjson(s.proxies)
+        resp_ip =  s.get("https://api.ipify.org/");
+        Error.warn("".center(widthCenter,'.'));
+        Error.warn(resp_ip.text.center(widthCenter,'.'));
+        Error.warn("".center(widthCenter,'.'));
         Error.executing(f"Creando cuenta...",self.listerrorExecutinModulo)
         Error.info(f"{'Username:'+self.username.center(30,'~')} {'Email: '+self.email.center(50,'~')}")
         try:
@@ -384,7 +387,8 @@ class Instagram:
                         Error.warn(f"Error en: [{error}]")
                         if error in ["error","ip"]:
                             for item in rjson['errors'][error]:
-                                Error.e(1,f"[{error}]: {item}")
+                                Error.e(1,f"{self.listerrorExecutinModulo} [{error}]: {item}")
+                                Error.executing(f"Intentando crear nuevamente",self.listerrorExecutinModulo)
                                 self.crearcuenta(**kw)
                         else:
                             for item in rjson['errors'][error]:
