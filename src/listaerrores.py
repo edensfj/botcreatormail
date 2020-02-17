@@ -41,8 +41,7 @@ class Error:
         return print(mensaje)
     def warn(msg=''):
         sleep(timeSleep)
-        m = msg
-        # m = msg[:100:]
+        m = msg[:100:]
         mensaje = f'[ {Fore.YELLOW}'u"\u26A0"f'{Fore.RESET} ]\t{Fore.YELLOW}{m}...{Style.RESET_ALL}'
         append_new_line(mensaje)
         return print(mensaje)

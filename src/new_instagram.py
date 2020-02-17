@@ -57,11 +57,14 @@ class Instagram:
     def __init__(self):
         ##os.system('clear')
         Error.info("Configurando Instagram para su uso")
-        self.user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0"
         self.proxy = RandomProxy()
         urlproxy = self.proxy.get()
-        Error.executing("Configurando proxy",self.listerrorExecutinModulo)
         self.session = requests.Session()
+        Error.executing("Configurando proxy",self.listerrorExecutinModulo)
+        self.session.proxies = {
+            "http":"{}".format(urlproxy),
+            "https":"{}".format(urlproxy),
+        }
         self.sql = Sql()
         self.tempmail = TempMail();
     def setVariablesCreate(self,**kw):
@@ -88,15 +91,13 @@ class Instagram:
         self.usedby = self.idemail
     def initialConnect(self):
         Error.executing(f"Estableciendo conexion inicial",self.listerrorExecutinModulo)
-        self.session = requests.Session()
         self.session.headers.update({
             "content-language":"es-la",
             "Accept-Language":"es-CO",
             "Content-Type":"application/x-www-form-urlencoded",
-            "User-Agent":self.user_agent
         })
         try:
-            requests_start = requests.get(self.webCreateUrlSharedData)
+            requests_start = self.session.get(self.webCreateUrlSharedData)
         except ProxyError:
             self.changeProxy()
             self.initialConnect()
@@ -128,7 +129,6 @@ class Instagram:
                 "X-IG-WWW-Claim":"0",
                 "X-Instagram-AJAX":self.xInstagramAJAX,
                 "X-Requested-With":"XMLHttpRequest",
-                "User-Agent":self.user_agent
             })
             self.session.cookies.update({
                 "csrftoken":self.csrftoken,
@@ -169,9 +169,6 @@ class Instagram:
         if show:
             print(self.p_table)
     def postCreateAccount(self):
-        self.setNewEmail()
-        self.session = requests.Session()
-        self.changeProxy();
         self.setPretyTable([self.idemail,self.email,self.username,self.nombre,self.table,self.column,self.createdby,self.usedby])
         Error.info(f"Preparando {self.listerrorExecutinModulo} para creacion de cuentas")
         Error.executing(f"Generando FormData",self.listerrorExecutinModulo)
@@ -195,19 +192,11 @@ class Instagram:
             "X-IG-WWW-Claim":"0",
             "X-Instagram-AJAX":self.xInstagramAJAX,
             "X-Requested-With":"XMLHttpRequest",
-            "content-language":"es-la",
-            "Accept-Language":"es-CO",
-            "User-Agent":self.user_agent,
-            "Host":"www.instagram.com",
-            "Origin":"https://www.instagram.com",
-            "Referer":"https://www.instagram.com/",
-            "Host":"www.instagram.com",
         })
         self.session.cookies.update({
             "csrftoken":self.csrftoken,
             "ig_did":self.deviceId,
         })
-        Error.info("DEVIDE: {}".format(self.deviceId));
         # ppjson(formData)
         Error.executing(f"Creando cuenta de instagram",self.listerrorExecutinModulo)
         try:
@@ -305,7 +294,6 @@ class Instagram:
             "X-IG-WWW-Claim":"0",
             "X-Instagram-AJAX":self.xInstagramAJAX,
             "X-Requested-With":"XMLHttpRequest",
-            "User-Agent":self.user_agent
         })
         self.session.cookies.update({
             "csrftoken":self.csrftoken,
