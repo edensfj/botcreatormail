@@ -119,6 +119,19 @@ class Instagram:
                 "ig_did":self.deviceId,
             }
             return rjson
+    def guardarcuentacreada(self):
+        self.sql.query(f"INSERT INTO emails(nombre,email,hasinstagram,istemp) VALUES('{self.nombre}','{self.email}','1','1')");
+        self.sql.db.commit()
+        self.idemail = self.sql.cursor.lastrowid;
+        self.usedby = self.idemail;
+        payload={
+            "username":self.username,
+            "password":self.password,
+            "createdby":self.createdby,
+            "usedby":self.usedby,
+        }
+        self.sql.createInstagramAccont(**payload)
+        pass
     def emailIsTaken(self):
         Error.executing(f"el correo {self.email} alparecer esta en uso.",self.listerrorExecutinModulo)
         self.email = self.tempmail.getEmailLogin(True)
@@ -127,7 +140,6 @@ class Instagram:
         self.email = self.tempmail.getEmailLogin(True)
         return self.email
     def postCreateAccount(self):
-
         Error.info(f"{'Username:'+self.username.center(35,'~')}_{'Email: '+self.email.center(55,'~')}")
         formData = {
             'email':self.email,
@@ -158,7 +170,7 @@ class Instagram:
                 self.postCreateAccount()
         else:
             Error.info(f"Status Code: {resp.status_code}".center(widthCenter,'.'))
-            if resp.status_code===200:
+            if resp.status_code==200:
                 rjson = resp.json();
                 if 'errors' in rjson:
                     errorType = rjson['error_type']
@@ -185,60 +197,22 @@ class Instagram:
                                         Error.info("cambio el nombre de usuario".center(widthCenter,'-'))
                                         time.sleep(5)
                     self.postCreateAccount()
+                else:
+                    Error.ok("".center(widthCenter,'-'))
+                    Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
+                    self.guardarcuentacreada();
+                    Error.ok("".center(widthCenter,'-'))
+            elif resp.status_code==429:
+                self.waitrefresh()
                 pass
-            elif resp.status_code===429:
-                pass
-            elif resp.status_code===400:
+            elif resp.status_code==400:
+                Error.ok("".center(widthCenter,'-'))
+                Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
+                self.guardarcuentacreada();
+                Error.ok("".center(widthCenter,'-'))
                 pass
             else:
-                pass
-        ppjson(formData)
-
-        #     if requests_create.status_code==200:
-        #         Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
-        #         rjson = requests_create.json()
-        #         ppjson(rjson)
-        #         if 'errors' in rjson:
-        #             errorType = rjson['error_type']
-        #             Error.e(1,f"Se encontraron errores al crear la cuenta de instagram, error type: {Fore.RED}{errorType}{Style.RESET_ALL}")
-        #             if errorType == 'generic_request_error':
-        #                 self.checkGenericRequestError()
-        #             else:
-        #                 for error in rjson['errors']:
-        #                     Error.warn(f"Error en: [{error}]")
-        #                     if error in ["error","ip"]:
-        #                         for item in rjson['errors'][error]:
-        #                             Error.executing(f"[{error}]: {item}",self.listerrorExecutinModulo)
-        #                             time.sleep(1)
-        #                         if error=='ip':
-        #                             self.changeProxy()
-        #                             self.postCreateAccount()
-        #                     else:
-        #                         for item in rjson['errors'][error]:
-        #                             message = item['message']
-        #                             code = item['code']
-        #                             Error.executing(f"[{Fore.RED}{code}{Style.RESET_ALL}]: {message}",self.listerrorExecutinModulo)
-        #                             if code == 'email_is_taken':
-        #                                 self.emailIsTaken()
-        #         else:
-        #             print()
-        #             print("prosigo con la creacion de la cuenta")
-        #             Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(self.email,self.username,self.password))
-        #             print(rjson)
-        #             time.sleep(100)
-        #             sys.exit()
-        #     else:
-        #         Error.info(f"Estatus code: {requests_create.status_code}".center(50,'.'))
-        #         ppjson(requests_create.json())
-        #         if requests_create.status_code==400:
-        #             Error.warn("La cuenta de instagram fue creada.")
-        #             Error.executing(f"Guardando cuenta {self.username} en base de datos",self.listerrorExecutinModulo)
-        #             self.sql.createInstagramAccont(username=self.username,password=self.password,createdby=self.createdby,usedby=self.usedby)
-        #             Error.warn("Tenemos inconvenientes para activar cuenta de instagram")
-
-        #         if requests_create.status_code==429:
-        #             self.waitrefresh()
-        #             # ppjson(requests_create.json())
+                Error.warn(resp.text)
     def changeProxy(self):
         Error.executing("Cambiando proxy para esta Session",self.listerrorExecutinModulo)
         urlproxy = self.proxy.get()
@@ -303,7 +277,7 @@ class Instagram:
                                     Error.e(1,f"[{Fore.RED}{c}{Style.RESET_ALL}]: {m}")
                                     if c=='email_is_taken':
                                         self.emailIsTaken()
-                                    elif c==='username_is_taken':
+                                    elif c=='username_is_taken':
                                         self.username = random.choice(new_username)
                                         Error.executing(f"Actualizando username a: {self.username}",self.listerrorExecutinModulo)
                     self.postCreateAccount()
@@ -316,20 +290,8 @@ class Instagram:
                 Error.warn(f"Estatus code: {check.status_code}".center(widthCenter,'.'))
                 self.waitrefresh()
             else:
-                ppjson(check.json())
                 Error.warn(check.text);
-
-
-
-            if checkG.status_code==200:
-                j=checkG.json()
-                new_username = j["username_suggestions"]
-                errorType = j["error_type"]
-                Error.e(1,f"Tipo de error: {Fore.RED}{errorType}{Style.RESET_ALL}")
-
-                self.postCreateAccount()
-
-
+                time.sleep(10)
     def createAccount(self,**kw):
         self.setVariablesCreate(**kw)
         self.initialConnect()

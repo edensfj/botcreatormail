@@ -185,7 +185,7 @@ class Sql:
             return False
         else:
             self.db.commit()
-            Error.ok(f"Cuenta de instagram se agrego correctamente.")
+            Error.ok(f"EXITO: Cuenta de instagram se agrego correctamente.")
             return self.cursor.lastrowid
     class Select:
         db=None
