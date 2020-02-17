@@ -1,8 +1,7 @@
 from src.listaerrores import Error,Fore,Style
 from src.new_sqlconnect import Sql
 from src.new_randomuser import RandomUser
-from src.new_instagram import Instagram
-from src.new_tempmail import TempMail
+from src.new_instagram import Instagram, TempMail
 from src.config import Config as BotConfig
 from pprintjson import pprintjson as ppjson
 import os, sys
@@ -10,7 +9,7 @@ welcome = u"\u2622"f'\t{Fore.RED}..::| INICIANDO PROGRAMA |::..{Style.RESET_ALL}
 powerby = u"\U0001F6E1"f" Creado por: {Fore.MAGENTA}edens{Style.RESET_ALL} "u"\u269B"
 version = ' v0.1 '
 namepackage = ' Bot Instagram: Skipp = Version: {} '.format(version)
-os.system('clear')
+# os.system('clear')
 width = 100
 print()
 print(welcome.center(width-len(welcome),' '))
@@ -26,15 +25,15 @@ if f:
 else:
 	users = RandomUser()
 	for user in users.generate(1):
-		tm = TempMail(user['username'])
+		tm_ = TempMail()
 		variables = {
-			"email":tm.getEmailLogin(),
+			"email":tm_.getEmailLogin(),
 			"username":user['username'],
 			"nombre":user['fullname'],
 			"password":"temp_password"
 		}
 		im = Instagram()
-		im.createAccount(**variables)
+		im.crearcuenta(**variables)
 
 
 # f = sql.lastEmailAliasAvailable()
