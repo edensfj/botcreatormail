@@ -63,7 +63,7 @@ for user in users.generate(1):
 	Error.executing("GRNERANDO CUENTA DE INSTAGRAM",ip)
 	resp2 = s.post(webCreateUrl, data=formData, allow_redirects=True)
 	jsonr = resp2.json()
-	errno.info(jsonr);
+	Error.info(jsonr);
 	if 'checkpoint_url' in jsonr:
 		Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(email,user['username'],"temp_password"))
 		sql = Sql()
