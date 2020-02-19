@@ -62,7 +62,7 @@ for user in users.generate(1):
 		'tos_version' : 'row',
 		'opt_into_one_tap' : 'false'
 	}
-	Error.executing("GRNERANDO CUENTA DE INSTAGRAM",ip)
+	Error.executing(f"GRNERANDO CUENTA DE INSTAGRAM [{username}] ",ip)
 	resp2 = s.post(webCreateUrl, data=formData, allow_redirects=True)
 	jsonr = resp2.json()
 	Error.info(jsonr);
