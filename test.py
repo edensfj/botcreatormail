@@ -50,12 +50,14 @@ users = RandomUser()
 for user in users.generate(1):
 	tm_ = TempMail(user['username'])
 	email = tm_.getEmailLogin();
+	username = user['username']
+	nombre = user['fullname']
 	formData = {
 		'email':email,
 		'password':"temp_password",
 		"enc_password":"#PWD_INSTAGRAM_BROWSER:6:1581326795652:AfVQAES3SDQpLiXhMquGh27QjTmdrCh+ZVdKlpRntC4W/xYAcKGenKfTDEU/HfIWGWBHtMeXl+figp3vK+KnJB0aAW5VijtZQogHwBrN5l52QLs5gAmn9WEGmtyROg9ZYplxDH2GF7rEkXaezCAOhqI=",
-		'username':user['username'],
-		'first_name':user['fullname'],
+		'username':username,
+		'first_name':nombre,
 		'seamless_login_enabled' : '1',
 		'tos_version' : 'row',
 		'opt_into_one_tap' : 'false'
@@ -65,14 +67,14 @@ for user in users.generate(1):
 	jsonr = resp2.json()
 	Error.info(jsonr);
 	if 'checkpoint_url' in jsonr:
-		Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(email,user['username'],"temp_password"))
+		Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(email,username,"temp_password"))
 		sql = Sql()
 		sql.query(f"INSERT INTO emails(nombre,email,hasinstagram,istemp) VALUES('{user['fullname']}','{email}','1','1')");
 		sql.db.commit()
 		idemail = sql.cursor.lastrowid;
 		usedby = idemail;
 		payload={
-			"username":user['username'],
+			"username":username,
 			"password":"temp_password",
 			"createdby":"0",
 			"usedby":usedby,
