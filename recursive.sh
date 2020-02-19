@@ -1,3 +1,3 @@
 for (( i = 0; i < 6; i++ )); do
-	xterm -e 'python ~/tmp/tmp_bot/botcreatoremail/main.py'&
+	xterm -e 'while true; do python ./main.py; done'&
 done
