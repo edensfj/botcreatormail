@@ -36,7 +36,7 @@ s.proxies = {'http':'socks5://127.0.0.1:9051','https':'socks5://127.0.0.1:9051'}
 # s.proxies = {'http':torproxy,'https':torproxy}
 ip = s.get("https://api.ipify.org/").text
 s.headers.update({
-"Accept-Language":AcceptLanguage,
+"Accept-Language":"es-CO",
 "Content-Type":"application/x-www-form-urlencoded",
 "X-CSRFToken":csrftoken,
 "X-IG-App-ID":"936619743392459",
@@ -72,7 +72,8 @@ for user in users.generate(1):
     Error.executing(f"GRNERANDO CUENTA DE INSTAGRAM [{username}] ",ip)
     resp2 = s.post(webCreateUrl, data=formData, allow_redirects=True)
     jsonr = resp2.json()
-    Error.info(jsonr);
+    Error.executing(resp2.status_code,"STATUS");
+    Error.executing(jsonr,"RESPONSE");
     if 'checkpoint_url' in jsonr:
         Error.ok("EXITO: Cuenta creada, Email:{} username:{} password: {}".format(email,username,"temp_password"))
         sql = Sql()
