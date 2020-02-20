@@ -23,16 +23,9 @@ public_key = rjson['encryption']['public_key']
 key_id = rjson['encryption']['key_id']
 
 
-proxystor =[
-            'socks5://127.0.0.1:9050',
-            'socks5://127.0.0.1:9051',
-            'socks5://127.0.0.1:9052',
-            'socks5://127.0.0.1:9053',
-            'socks5://127.0.0.1:9054',
-            'socks5://127.0.0.1:9055',
-            'socks5://127.0.0.1:9056',
-           ]
-
+proxystor = []
+for setproxy in range(12):
+    proxystor.append(f"socks5://127.0.0.1:{setproxy}")
 
 s = requests.Session()
 torproxy = random.choice(proxystor);
