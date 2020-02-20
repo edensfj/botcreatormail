@@ -4,7 +4,7 @@ geoip6="./geoip6"
 TEMP_PATH="/tmp"
 
 rm -rf torrc*
-for (( i = 0; i < 7; i++ )); do
+for (( i = 0; i < 12; i++ )); do
 # rand="$RANDOM"
 rand="905$i"
 mkdir -p "$TEMP_PATH/torrc_$rand"

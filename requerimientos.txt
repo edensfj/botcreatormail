@@ -2,6 +2,7 @@ requests
 xlrd
 beautifulsoup4
 xlsxwriter
+selenium
 unidecode
 mysql
 fake_useragent
