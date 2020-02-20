@@ -1,4 +1,4 @@
-import requests,random,time
+import requests,random,time,sys
 from src.new_randomuser import RandomUser
 from src.new_tempmail import TempMail
 from src.new_sqlconnect import Sql
@@ -23,17 +23,20 @@ public_key = rjson['encryption']['public_key']
 key_id = rjson['encryption']['key_id']
 
 
-proxystor =['socks5://127.0.0.1:9051','socks5://puntoquimico.com.co:9050']
+proxystor =[
+            'socks5://127.0.0.1:9050',
+            'socks5://127.0.0.1:9051',
+            'socks5://127.0.0.1:9052',
+            'socks5://127.0.0.1:9053',
+            'socks5://127.0.0.1:9054',
+            'socks5://127.0.0.1:9055',
+            'socks5://127.0.0.1:9056',
+           ]
 
 
 s = requests.Session()
-
 torproxy = random.choice(proxystor);
-
-# s.proxies = {'http':'socks5://192.168.0.13:9051','https':'socks5://192.168.0.13:9051'}
-s.proxies = {'http':'socks5://127.0.0.1:9051','https':'socks5://127.0.0.1:9051'}
-# s.proxies = {'http':'socks5://104.237.137.138:9050','https':'socks5://104.237.137.138:9050'}
-# s.proxies = {'http':torproxy,'https':torproxy}
+s.proxies = {'http':torproxy,'https':torproxy}
 ip = s.get("https://api.ipify.org/").text
 s.headers.update({
 "Accept-Language":"es-CO",
@@ -89,5 +92,6 @@ for user in users.generate(1):
         }
         sql.createInstagramAccont(**payload)
     ppjson(jsonr)
-    timesleep = int(random.randrange(20))
-    time.sleep(3)
+    sys.exit();
+    # timesleep = int(random.randrange(20))
+    # time.sleep(3)
