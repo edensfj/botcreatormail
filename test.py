@@ -22,10 +22,11 @@ deviceId = rjson['device_id']
 public_key = rjson['encryption']['public_key']
 key_id = rjson['encryption']['key_id']
 
-
+initial_port=9050
 proxystor = []
 for setproxy in range(12):
-    proxystor.append(f"socks5://127.0.0.1:{setproxy}")
+    proxystor.append(f"socks5://127.0.0.1:{initial_port+setproxy}")
+
 
 s = requests.Session()
 torproxy = random.choice(proxystor);

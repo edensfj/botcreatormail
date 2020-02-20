@@ -1,12 +1,13 @@
+INITIAL_PORT=9050
 geoip="./geoip"
 geoip6="./geoip6"
 
 TEMP_PATH="/tmp"
 
-rm -rf torrc*
+rm -rf "$TEMP_PATH/torrc*"
 for (( i = 0; i < 12; i++ )); do
 # rand="$RANDOM"
-rand="905$i"
+rand=$(($INITIAL_PORT+$i))
 mkdir -p "$TEMP_PATH/torrc_$rand"
 DEST_FILE="$TEMP_PATH/torrc_$rand/geoip_$i"
 DEST_FILE6="$TEMP_PATH/torrc_$rand/geoip6_$i"
